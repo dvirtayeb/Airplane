@@ -4,23 +4,25 @@ import java.io.PrintWriter;
 import java.util.Scanner;
 
 public class airplane {
-	private String city; 
-	private MyDate date; 
-	private String company; 
-	private int hourFlightTime;
-	private int mintuesFlightTime; 
-	private double secFlightTime;
-	private String flightNum; 
-	private int terminal;
+	protected String city; 
+	protected MyDate date; 
+	protected String company; 
+	protected int hourFlightTime;
+	protected int mintuesFlightTime; 
+	protected double secFlightTime;
+	protected String flightNum; 
+	protected int terminal;
+	public enum direction {incoming , outgoing}; 
 
 	
-	public airplane(String company, String city,  String date, String flightTime, String flightNum, int terminal) {
+	public airplane(String company, String city,  String date, String flightTime, String flightNum, int terminal , String direction ) {
 		this.company = company;
 		this.city = city;
 		this.date = new MyDate(date);
 		setFlightTime(flightTime);
 		this.flightNum = flightNum;
 		this.terminal = terminal;
+		direction.valueOf(direction);
 	}
 	public airplane(Scanner scan) {
 		String str=scan.nextLine();
