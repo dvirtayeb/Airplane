@@ -12,12 +12,7 @@ def airplane():
 @app.route("/")
 def import_java_file():
     return subprocess.check_output(
-        ["java", "-classpath", "/Users/dvir tayeb/eclipse-workspace/Airplane/bin/airplane", "Program"])
-
-
-@app.route("/javaFile")
-def import_java_file1():
-    return subprocess.check_output(["java", "-classpath", "/Users/dvir tayeb/eclipse-workspace/UseMVC/bin", "Program"])
+        ["java", "-classpath", "/Users/dvir tayeb/eclipse-workspace/Airplane/bin", "airplane.Program"])
 
 
 # reset the app:
