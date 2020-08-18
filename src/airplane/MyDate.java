@@ -1,18 +1,26 @@
 package airplane;
 
 import java.io.PrintWriter;
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.Date;
 import java.util.Scanner;
 
 public class MyDate extends Date {
-	private int Day;
-	private int Month;
-	private int Year;
+	private int day;
+	private int month;
+	private int year;
 
-	public MyDate() {
-		Day = 1;
-		Month = 1;
-		Year = 2020;
+/*	public MyDate() {
+		day = 1;
+		month = 1;
+		year = 2020;
+	}
+*/	
+	public MyDate(int year, int month, int day) {
+		day = setDay(day);
+		setMonth(month);
+		setYear(year);
 	}
 
 	public MyDate(String s) {
@@ -30,59 +38,59 @@ public class MyDate extends Date {
 		 setDay(Integer.parseInt(numbers[2]));
 
 	}
+	
+	public int daysCount(MyDate userLimitDate, MyDate m) {
+		LocalDate limit = LocalDate.of(userLimitDate.year, userLimitDate.month, userLimitDate.day);
+		LocalDate fromList = LocalDate.of(m.year, m.month, m.day);
+		int difference = (int) ChronoUnit.DAYS.between(limit, fromList);
+		return difference;
+	}
 
 	public void saveDate(PrintWriter writer) {
-		writer.print(Day + ", ");
-		writer.print(Month + ", ");
-		writer.println(Year);
+		writer.print(day + ", ");
+		writer.print(month + ", ");
+		writer.println(year);
 	}
 
-	public MyDate(int year, int month, int day) {
-		Day = setDay(day);
-		setMonth(month);
-		setYear(year);
-	}
+
 
 	public int getDay() {
-		return Day;
+		return day;
 	}
 
 	public int setDay(int day) {
 		if (day > 31 || day < 1) {
-			this.Day = 1;
-		} else if (Month == 2) {
+			this.day = 1;
+		} else if (month == 2) {
 			if (day > 28 || day < 1) {
-				this.Day = 1;
+				this.day = 1;
 			}
 
 		}
-		this.Day = day;
-		return Day;
+		this.day = day;
+		return day;
 	}
 
 	public int getMonth() {
-		return Month;
+		return month;
 	}
 
 	public void setMonth(int month) {
 		if (month > 12 || month < 1) {
-			this.Month = 1;
+			this.month = 1;
 		}
-		this.Month = month;
+		this.month = month;
 	}
 
 	public int getYear() {
-		return Year;
+		return year;
 	}
 
 	public void setYear(int year) {
-		if (year > 2020 || year < 2000) {
-			Year = 2020;
-		}
-		this.Year = year;
+		this.year = year;
 	}
 
 	public String toString() {
-		return Year + "-" + Month + "-" + Day;
+		return year + "-" + month + "-" + day;
 	}
 }
