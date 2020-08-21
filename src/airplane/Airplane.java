@@ -13,13 +13,15 @@ public class Airplane {
 	protected String flightNum;
 	protected int terminal;
 	protected String country;
+	protected String directionFlight;
+	protected String airport;
 
 	public enum direction {
 		incoming, outgoing
 	};
 
 	public Airplane(String company, String city, String country, String date, String flightTime, String flightNum,
-			int terminal, String direction) {
+			int terminal, String directionFlight,String airport) {
 		this.company = company;
 		this.city = city;
 		this.country = country;
@@ -27,11 +29,20 @@ public class Airplane {
 		setFlightTime(flightTime);
 		this.flightNum = flightNum;
 		this.terminal = terminal;
-		direction.valueOf(direction);
+		this.directionFlight = directionFlight;
+		this.airport=airport;
 	}
 	
 	public String getDirectionIncoming() {
 		return direction.valueOf("incoming").toString();
+	}
+	
+	public int getDirection() {
+		if(directionFlight.equals("incoming"))
+			return 1;
+		else {
+			return 2;
+		}		
 	}
 
 	public String getCity() {
@@ -110,6 +121,14 @@ public class Airplane {
 	public String toString() {
 		return "company: " + company + " destination: " + city + " date: " + date.toString() + " time to flight: "
 				+ getTime() + " flight number: " + flightNum + " terminal: " + terminal;
+	}
+
+	public String getAirport() {
+		return airport;
+	}
+
+	public void setAirport(String airport) {
+		this.airport = airport;
 	}
 
 }
