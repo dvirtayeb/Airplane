@@ -1,19 +1,25 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
+    <meta charset="UTF-8" >
     <title>AirPlane - Form</title>
 </head>
 <body>
     <h1>AirPlane - Form</h1>
     <div>
-        <h3>Company:<input type="text" id="Company"><br></br></h3>
-        <h3>departure\Arrival Location: <input type="text"><br></br></h3>
-        <h3>Date: <input type="date" id="date"><br></br></h3>
-        <h3>Time: <input type="time" id="time"><br></br></h3>
-        <h3>Number Flight: <input type="text"><br></br</h3>
-        <h3>Terminal: <input type="text"><br></br></h3>
-        <input type="submit" value="Submit">
+        <form method="post">
+        <h3>Company:<input type="text" name="Company"><br></br></h3>
+            <h3>Select :  <select class="button" name="Departure-Arrival">
+                <option value="Departure">Departure</option>
+                <option value="Arrivals">Arrivals</option>
+            </select></h3>
+        <h3>State: <input type="text" name="Location"><br></br></h3>
+        <h3>Start Date: <input type="date" name="start_date"> End Date: <input type="date" name="end_date"><br></br></h3>
+        <h3>Time: <input type="time" name="time"><br></br></h3>
+        <h3>Number Flight: <input type="text" name="numFlight"><br></br</h3>
+        <h3>Terminal: <input type="text" name="Terminal"><br></br></h3>
+        <input type="submit" value="Create" style="height:40px;width:150px" >
+        </form>
     </div>
 </body>
 </html>
