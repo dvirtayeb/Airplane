@@ -7,11 +7,14 @@ app = Flask(__name__)
 
 
 def import_java_file(departure_arrival_string, start_date_string, end_date_string,
-                     company_string, state_string, city_string, airport_string, days_string):
+                     company_string, state_string, city_string, airport_string, sunday_string, monday_string,
+                     tuesday_string, wednesday_string, thursday_string, friday_string, saturday_string):
     return subprocess.check_output(
-        ["java", "-classpath", "/Users/dvir tayeb/eclipse-workspace/Airplane/bin", "airplane.Program",
+        ["java", "-classpath", "/Users/dvir tayeb/eclipse-workspace/Airplane/bin", "program.Program",
          "html", departure_arrival_string, start_date_string, end_date_string,
-         company_string, state_string, city_string, airport_string, days_string], universal_newlines=True)
+         company_string, state_string, city_string, airport_string,sunday_string, monday_string,
+         tuesday_string, wednesday_string, thursday_string, friday_string, saturday_string],
+        universal_newlines=True)
 
 
 @app.route("/", methods=['POST', 'GET'])
@@ -36,11 +39,32 @@ def search():
         end_date = request.form.get('end_date')
         if end_date == '':
             end_date = '1-1-1'
-        day = request.form.get('day')
+        sunday = request.form.get('Sunday')
+        if sunday == '':
+            sunday = 'false'
+        monday = request.form.get('Monday')
+        if monday == '':
+            monday = 'false'
+        tuesday = request.form.get('Tuesday')
+        if tuesday == '':
+            tuesday = 'false'
+        wednesday = request.form.get('Wednesday')
+        if wednesday == '':
+            wednesday = 'false'
+        thursday = request.form.get('Thursday')
+        if thursday == '':
+            thursday = 'false'
+        friday = request.form.get('Friday')
+        if friday == '':
+            friday = 'false'
+        saturday = request.form.get('Saturday')
+        if saturday == '':
+            saturday = 'false'
         return render_template('Flight.html',
                                departure_arrival=departure_arrival,
                                flight=import_java_file(departure_arrival, start_date, end_date,
-                                                       company, state, city, airport, day)
+                                                       company, state, city, airport, sunday, monday, tuesday,
+                                                       wednesday, thursday, friday, saturday)
                                )
 
     return render_template('SearchFlight-form.html')
@@ -48,6 +72,7 @@ def search():
 
 @app.route("/AirPlane-form", methods=['POST', 'GET'])
 def airplane():
+    days =["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday,", "Friday", "Saturday"]
     if request.method == 'POST':
         company = request.form.get('Company')
         departure_arrival = request.form.get("Departure-Arrival")
