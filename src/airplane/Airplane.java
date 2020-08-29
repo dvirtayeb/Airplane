@@ -15,13 +15,14 @@ public class Airplane {
 	protected String country;
 	protected String directionFlight;
 	protected String airport;
+	protected String day;
 
 	public enum direction {
 		incoming, outgoing
 	};
 
 	public Airplane(String company, String city, String country, String date, String flightTime, String flightNum,
-			int terminal, String directionFlight,String airport) {
+			int terminal, String directionFlight,String airport, String day) {
 		this.company = company;
 		this.city = city;
 		this.country = country;
@@ -31,6 +32,7 @@ public class Airplane {
 		this.terminal = terminal;
 		this.directionFlight = directionFlight;
 		this.airport=airport;
+		this.day = setDay(day);
 	}
 	
 	public String getDirectionIncoming() {
@@ -93,6 +95,14 @@ public class Airplane {
 		writer.print(flightNum + ", ");
 		writer.print(terminal + ", ");
 	}
+	private String setDay(String day) {
+		if(day.length()>0)
+			Character.toUpperCase(day.charAt(0));
+		if(day.equals("Sunday") || day.equals("Monday") || day.equals("Tuesday") || day.equals("Wednesday") || day.equals("Thursday") || day.equals("Friday") ||
+				day.equals("Saturday"))
+			return day;
+		return "Sunday";
+	}
 
 	private boolean setFlightTime(String flightTime) {
 		String[] numbers = flightTime.split(":");
@@ -129,6 +139,10 @@ public class Airplane {
 
 	public void setAirport(String airport) {
 		this.airport = airport;
+	}
+
+	public Object getDay() {
+		return day;
 	}
 
 }

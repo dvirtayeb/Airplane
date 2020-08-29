@@ -5,8 +5,8 @@ import java.util.ArrayList;
 public class Outgoing extends Airplane {
 	ArrayList<Airplane> outGoing;
 	public Outgoing(String company, String city, String country, String date, String flightTime, String flightNum,
-			int terminal,String airport) {
-		super(company, city, country, date, flightTime, flightNum, terminal, "outgoing",airport);
+			int terminal,String airport, String day) {
+		super(company, city, country, date, flightTime, flightNum, terminal, "outgoing",airport, day);
 		outGoing = new ArrayList<>();
 		
 	}

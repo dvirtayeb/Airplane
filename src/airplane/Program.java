@@ -14,106 +14,117 @@ public class Program {
 	static String city;
 	static String country;
 	static String airport;
+	static String day;
 	static List<Airplane> sortedListIncoming;
 	static List<Airplane> sortedListOutcoming;
 
 	public static void main(String[] args) {
 
 		List<Airplane> bengurion = new ArrayList<>();
-		bengurion.add(new Outgoing("elal", "eilat", "israel", "2021-1-05", "20:15", "Il505", 3, "bengurion"));
-		bengurion.add(new Outgoing("elal", "tel-aviv", "israel", "2020-12-05", "20:20", "Il505", 3, "bengurion"));
-		bengurion.add(new Incoming("alal", "modiin", "israel", "2020-05-05", "20:15", "Il505", 3, "bengurion"));
-		bengurion.add(new Incoming("elal", "tel-aviv", "israel", "2019-10-05", "20:15", "Il505", 3, "bengurion"));
-		bengurion.add(new Incoming("elal", "shoham", "israel", "2020-10-05", "20:15", "Il505", 3, "bengurion"));
+		bengurion.add(new Outgoing("elal", "eilat", "israel", "2021-1-05", "20:15", "Il505", 3, "bengurion", "sunday"));
+		bengurion.add(
+				new Outgoing("elal", "tel-aviv", "israel", "2020-12-05", "20:20", "Il505", 3, "bengurion", "monday"));
+		bengurion.add(
+				new Incoming("alal", "modiin", "israel", "2020-05-05", "20:15", "Il505", 3, "bengurion", "saturday"));
+		bengurion.add(
+				new Incoming("elal", "tel-aviv", "israel", "2019-10-05", "20:15", "Il505", 3, "bengurion", "monday"));
+		bengurion.add(
+				new Incoming("elal", "shoham", "israel", "2020-10-05", "20:15", "Il505", 3, "bengurion", "sunday"));
 		boolean isHtml = args.length > 0 && args[0].equalsIgnoreCase("html");
+		boolean isText = args[0].equals("text");
 
 		// search in web server HTML:
-		if(args.length >0) {
+		if (args.length > 0) {
 			flight = args[1].toString();
-			// HTML:
-			if(flight.equals("Departure") || flight.equals("Arrivals")) {
+			// Web UI:
+			if (flight.equals("Departure") || flight.equals("Arrivals")) {
 				startDate = new MyDate(args[2].toString());
 				endDate = new MyDate(args[3].toString());
 				company = args[4].toString();
 				country = args[5].toString();
 				city = args[6].toString();
 				airport = args[7].toString();
+				day = args[8].toString();
 			}
 			// Insert in the http line:
-			else if(flight.equals("departures") || flight.equals("arrivals")) {
+			else if (flight.equals("departures") || flight.equals("arrivals")) {
 				country = args[3].toString();
 				city = args[4].toString();
-				if(flight.equals("departures"))
+				if (flight.equals("departures"))
 					flight = "Departure";
 				else
 					flight = "Arrivals";
 				airport = args[5].toString();
 				company = args[2].toString();
-				int year= Integer.parseInt(args[8].toString());
-				int month= Integer.parseInt(args[7].toString());
-				int day= Integer.parseInt(args[6].toString());
-				int year2= Integer.parseInt(args[11].toString());
-				int month2= Integer.parseInt(args[10].toString());
-				int day2= Integer.parseInt(args[9].toString());
+				int year = Integer.parseInt(args[8].toString());
+				int month = Integer.parseInt(args[7].toString());
+				int day = Integer.parseInt(args[6].toString());
+				int year2 = Integer.parseInt(args[11].toString());
+				int month2 = Integer.parseInt(args[10].toString());
+				int day2 = Integer.parseInt(args[9].toString());
 				startDate = new MyDate(year, month, day);
 				endDate = new MyDate(year2, month2, day2);
 				ArrayList<String> days = new ArrayList<>();
 				for (int i = 0; i < 7; i++) {
-					days.add(args[i+12].toString());
+					days.add(args[i + 12].toString());
 				}
 			}
-				
+
 			switch (flight) {
-			case "departures":
-				showResultSearchFlight(bengurion, flight, startDate, endDate,company, city, country, airport, isHtml);
-				break;
-			case "arrivals":
-				showResultSearchFlight(bengurion, flight, startDate, endDate,company, city, country, airport, isHtml);
-				break;
+			
+			// Web:
 			case "Departure":
-				showResultSearchFlight(bengurion, flight, startDate, endDate,company, city, country, airport, isHtml);
+				showResultSearchFlight(bengurion, flight, startDate, endDate, company, city, country, airport, day, isHtml, isText);
 				if (isHtml)
 					System.out.println("<br>");
 				break;
 			case "Arrivals":
-				showResultSearchFlight(bengurion, flight, startDate, endDate,company, city, country, airport, isHtml);
+				showResultSearchFlight(bengurion, flight, startDate, endDate, company, city, country, airport, day, isHtml, isText);
 				if (isHtml)
 					System.out.println("<br>");
+				break;
+			// Html line:
+				
+			case "departures":
+				showResultSearchFlight(bengurion, flight, startDate, endDate, company, city, country, airport, day, isHtml, isText);
+				break;
+			case "arrivals":
+				showResultSearchFlight(bengurion, flight, startDate, endDate, company, city, country, airport, day, isHtml, isText);
 				break;
 			default:
 				System.out.println("No flights to show");
 				break;
 			}
-		// console :	
-		}else {
+			// console :
+		} else {
 			Scanner s = new Scanner(System.in);
 			bengurion = sort(bengurion);
 			createFlight(s, bengurion);
 			System.out.println(show(bengurion));
-			sortTheList(s, bengurion, isHtml);
+			sortTheList(s, bengurion, isHtml, isText);
 		}
 	}
 
-	private static void showResultSearchFlight(List<Airplane> bengurion, String flight, MyDate startDate, MyDate endDate,
-			String company, String city, String country, String airport, boolean isHtml) {
+	private static void showResultSearchFlight(List<Airplane> bengurion, String flight, MyDate startDate,
+			MyDate endDate, String company, String city, String country, String airport, String day, boolean isHtml, boolean isText) {
 		sortedListIncoming = new ArrayList<>();
 		sortedListOutcoming = new ArrayList<>();
-		insertToSortedList(bengurion, flight, startDate, endDate, company,
-				city, country, airport, isHtml);
+		insertToSortedList(bengurion, flight, startDate, endDate, company, city, country, airport, day, isHtml, isText);
 
 	}
 
-	private static void insertToSortedList(List<Airplane> bengurion, String flight, MyDate startDate, MyDate endDate, String company,
-			String city, String country, String airport, boolean isHtml) {
+	private static void insertToSortedList(List<Airplane> bengurion, String flight, MyDate startDate, MyDate endDate,
+			String company, String city, String country, String airport,String day, boolean isHtml, boolean isText) {
 		for (int i = 0; i < bengurion.size(); i++) {
+			int directionFlight = bengurion.get(i).getDirection();
 			switch (flight) {
 
 			case "Departure":
-				if(bengurion.get(i).getDirection() == 2)
+				if (directionFlight == 2)
 					sortedListIncoming.add(bengurion.get(i));
 				break;
 			case "Arrivals":
-				if(bengurion.get(i).getDirection() ==1)
+				if (directionFlight == 1)
 					sortedListOutcoming.add(bengurion.get(i));
 				break;
 			default:
@@ -121,66 +132,75 @@ public class Program {
 				break;
 			}
 		}
-		if(flight.equals("Departure")) {
-			 showSortedList(sortedListIncoming, startDate, endDate, company, city, country, airport, isHtml);
-		}
-		else if(flight.equals("Arrivals")) {
-			 showSortedList(sortedListOutcoming, startDate, endDate, company, city, country, airport, isHtml);
-		}
-		else {
+		if (flight.equals("Departure")) {
+			showSortedList(sortedListIncoming, startDate, endDate, company, city, country, airport, day, isHtml, isText);
+		} else if (flight.equals("Arrivals")) {
+			showSortedList(sortedListOutcoming, startDate, endDate, company, city, country, airport, day, isHtml, isText);
+		} else {
 			System.out.println("no flights");
 		}
-		
+
 	}
-	
-	private static void showSortedList(List<Airplane> sortedList, MyDate startDate, MyDate endDate,
-			String company, String city, String country, String airport, boolean isHtml) {
+
+	private static void showSortedList(List<Airplane> sortedList, MyDate startDate, MyDate endDate, String company,
+			String city, String country, String airport,String day , boolean isHtml, boolean isText) {
 		List<Airplane> finalSortedListByAllVariables = new ArrayList<>();
 		Airplane airplaneToEnter;
-		System.out.println("Here are the sort by the Date:" + startDate + ",Until: " + endDate + ", By company: " + company
-				+ ", By city: " + city + ", By country: " + country + ", By airport: " + airport);
-		if(isHtml)
+		System.out.println("Here are the sort by the Date:" + startDate + ",Until: " + endDate + ", By company: "
+				+ company + ", By city: " + city + ", By country: " + country + ", By airport: " + airport + ", By day: " + day);
+		if (isHtml)
 			System.out.println("<br>");
 		System.out.println("--------------------");
-		if(isHtml)
+		if (isHtml) {
 			System.out.println("<br>");
-		System.out.println("the List: \n");
+		} else if(isText) {
+			System.out.println("\n");
+		}
+		System.out.println("the List: ");
+		if (isHtml) {
+			System.out.println("<br>");
+		}
 		MyDate tempMyDate = new MyDate("1-1-1");
 		for (int i = 0; i < sortedList.size(); i++) {
 			airplaneToEnter = sortedList.get(i);
-			
-			if(!(startDate.toString().equals(tempMyDate.toString())) || !(endDate.toString().equals(tempMyDate.toString()))) {
+
+			if (!(startDate.toString().equals(tempMyDate.toString()))
+					|| !(endDate.toString().equals(tempMyDate.toString()))) {
 				if (!(airplaneToEnter.date.daysCount(startDate, airplaneToEnter.date) >= 0)
 						|| !(airplaneToEnter.date.daysCount(endDate, airplaneToEnter.date) <= 0)) {
 					sortedList.set(i, null);
 					continue;
 				}
-				
-			}if(company == null)
+			}
+			
+			if (company == null)
 				company = "null";
 			if (!company.equals("null")) {
 				if (!airplaneToEnter.getCompany().equals(company)) {
 					sortedList.set(i, null);
 					continue;
 				}
-				
-			}if(city == null)
+			}
+			
+			if (city == null)
 				city = "null";
 			if (!city.toString().equals("null")) {
 				if (!airplaneToEnter.getCity().equals(city)) {
 					sortedList.set(i, null);
 					continue;
 				}
-				
-			}if(country == null)
+			}
+			
+			if (country == null)
 				country = "null";
 			if (!country.equals("null")) {
 				if (!airplaneToEnter.getCountry().equals(country)) {
 					sortedList.set(i, null);
 					continue;
 				}
-
-			}if(airport == null)
+			}
+			
+			if (airport == null)
 				airport = "null";
 			if (!airport.equals("null")) {
 				if (!airplaneToEnter.getAirport().equals(airport)) {
@@ -188,45 +208,54 @@ public class Program {
 					continue;
 				}
 			}
+			if (day == null)
+				day = "null";
+			if (!day.equals("null")) {
+				if (!airplaneToEnter.getDay().equals(day)) {
+					sortedList.set(i, null);
+					continue;
+				}
+			}
 			finalSortedListByAllVariables.add(airplaneToEnter);
 		}
-		
-		if(finalSortedListByAllVariables.size() > 0) {
+
+		if (finalSortedListByAllVariables.size() > 0) {
 			System.out.println(finalSortedListByAllVariables.toString());
 		} else {
 			System.out.println("We didn't found a flight for your search");
 		}
 	}
-	
-	private static void sortTheList(Scanner s, List<Airplane> bengurion, boolean isHtml) {
+
+	private static void sortTheList(Scanner s, List<Airplane> bengurion, boolean isHtml, boolean isText) {
 		List<Integer> select = new ArrayList<>();
 		sortedListIncoming = new ArrayList<>();
 		sortedListOutcoming = new ArrayList<>();
-		showManu(s, select);
+		sortSelectionByUser(s, select);
 		if (select.get(0) == 1) {// incoming flight
 			detailsFromUserToSort(s, select);
 		}
 		if (select.get(0) == 2) { // out going flight
 			detailsFromUserToSort(s, select);
 		}
-		insertToSortedListOnConsole(bengurion, select, startDate, endDate, company, city,
-				country, airport, isHtml);
+		insertToSortedListOnConsole(bengurion, select, startDate, endDate, company, city, country, airport, day, isHtml, isText);
 	}
 
-	private static void insertToSortedListOnConsole(List<Airplane> bengurion,List<Integer> select, MyDate startDate, MyDate endDate, String company,
-			String city, String country, String airport, boolean isHtml) {
+	private static void insertToSortedListOnConsole(List<Airplane> bengurion, List<Integer> select, MyDate startDate,
+			MyDate endDate, String company, String city, String country, String airport,String day, boolean isHtml, boolean isText) {
 		int selected = select.get(0);
 		for (int i = 0; i < bengurion.size(); i++) {
+			int directionFlight = bengurion.get(i).getDirection();
+			Airplane flight = bengurion.get(i);
 			switch (selected) {
-
+			
 			case 1:
-				if (bengurion.get(i).getDirection() == 1)
-					sortedListIncoming.add(bengurion.get(i));
+				if (directionFlight == 1)
+					sortedListIncoming.add(flight);
 
 				break;
 			case 2:
-				if (bengurion.get(i).getDirection() == 2)
-					sortedListOutcoming.add(bengurion.get(i));
+				if (directionFlight == 2)
+					sortedListOutcoming.add(flight);
 				break;
 
 			default:
@@ -235,24 +264,15 @@ public class Program {
 			}
 		}
 		if (selected == 0)
-			showSortedList(bengurion, startDate, endDate, company, city, country, airport, isHtml);
+			showSortedList(bengurion, startDate, endDate, company, city, country, airport, day , isHtml, isText);
 		else if (selected == 1)
-			showSortedList(sortedListIncoming, startDate, endDate, company, city, country, airport, isHtml);
+			showSortedList(sortedListIncoming, startDate, endDate, company, city, country, day, airport, isHtml, isText);
 		else if (selected == 2)
-			showSortedList(sortedListOutcoming, startDate, endDate, company, city, country, airport, isHtml);
+			showSortedList(sortedListOutcoming, startDate, endDate, company, city, country, day, airport, isHtml, isText);
 		else {
 			System.out.println("no flight");
 		}
 	}
-	
-	public static boolean valuesEquals(List<Airplane> sortedList,Object airplane) {
-		for (int i = 0; i < sortedList.size(); i++) {
-			if (airplane.equals(sortedList.get(i)))
-				return true;
-		}
-		return false;
-	}
-
 
 	private static void detailsFromUserToSort(Scanner s, List<Integer> select) {
 		if (select.get(1) == 1) {// sort by date
@@ -277,6 +297,10 @@ public class Program {
 			System.out.println("please provide me the airport name");
 			airport = s.next();
 		}
+		if (select.get(6) == 1) { // sort by airport
+			System.out.println("please provide me the day");
+			day = s.next();
+		}
 	}
 
 	private static MyDate getDateFromUser(Scanner s) {
@@ -290,7 +314,7 @@ public class Program {
 		return date;
 	}
 
-	private static void showManu(Scanner s, List<Integer> select) {
+	private static void sortSelectionByUser(Scanner s, List<Integer> select) {
 		System.out.println(
 				"please choose from the list which sort would you like to do, you can choose more then just one option");
 
@@ -306,26 +330,29 @@ public class Program {
 		// for city sort:
 		System.out.println("for sort by city press 1 , if you dont want to sort by city press 0");
 		select.add(s.nextInt());
-		 // for country sort:
-		System.out.println("for sort by country press 1 , if you dont want to sort by country press 0");																					
+		// for country sort:
+		System.out.println("for sort by country press 1 , if you dont want to sort by country press 0");
 		select.add(s.nextInt());
-		 // for airport sort:
+		// for airport sort:
 		System.out.println("for sort by airport press 1 , if you dont want to sort by airport press 0");
 		select.add(s.nextInt());
+		System.out.println("for sort by day press 1 , if you dont want to sort by day press 0");
+		select.add(s.nextInt());
 	}
-	
+
 	// CREATE Flight:
-	
-	private static int showOption(Scanner s) {
+
+	private static int showOptions(Scanner s) {
 		System.out.println("hello, please enter number for what you would like to do");
-		System.out.println("enter 1 for create incoming flight , 2 for for create outgoing flight, and 0 to exit ");
+		System.out
+				.println("enter 1 for create incoming flight , 2 for for create outgoing flight, and 0 for continue: ");
 		return s.nextInt();
 	}
 
 	private static void createFlight(Scanner s, List<Airplane> bengurion) {
 		int select;
 		do {
-			select = showOption(s);
+			select = showOptions(s);
 			switch (select) {
 			case 1:
 				bengurion.add(createIncoming(s));
@@ -355,7 +382,9 @@ public class Program {
 		int T = s.nextInt();
 		System.out.println("please enter a  airport");
 		String airport = s.next();
-		return new Incoming(com, city, country, date, time, Fn, T, airport);
+		System.out.println("please enter a  day");
+		String day = s.next();
+		return new Incoming(com, city, country, date, time, Fn, T, airport, day);
 	}
 
 	private static Airplane createIncoming(Scanner s) {
@@ -373,27 +402,13 @@ public class Program {
 		String Fn = s.next();
 		System.out.println("please enter a  airport");
 		String airport = s.next();
-		return new Incoming(com, city, country, date, time, Fn, 3, airport);
+		System.out.println("please enter a  day");
+		String day = s.next();
+		return new Incoming(com, city, country, date, time, Fn, 3, airport, day);
 	}
 
-	// OTHER: 
+	// OTHER:
 	
-	private static void filterByDate(List<Airplane> bengurion, MyDate Start, MyDate end, LocalDate localDate) {
-		List<Airplane> filtered = new ArrayList<>();
-
-		for (int i = Start.getDay(); i <= end.getDay(); i++) {
-			MyDate date = new MyDate(Start.getYear(), Start.getMonth(), i);
-			if (Start.before(date) && end.after(date)) {
-				for (int j = 0; j < bengurion.size(); j++) {
-					if (bengurion.get(i).getData().equals(date.toString()))
-						filtered.add(bengurion.get(i));
-				}
-			}
-
-		}
-
-	}
-
 	private static String show(List<Airplane> bengurion2) {
 		StringBuffer sb = new StringBuffer();
 		for (int i = 0; i < bengurion2.size(); i++)
@@ -418,5 +433,4 @@ public class Program {
 		}
 		return bengurion;
 	}
-
 }

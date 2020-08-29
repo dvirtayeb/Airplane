@@ -11,12 +11,12 @@ public class MyDate extends Date {
 	private int month;
 	private int year;
 
-/*	public MyDate() {
+	public MyDate() {
 		day = 1;
 		month = 1;
-		year = 2020;
+		year = 1;
 	}
-*/	
+
 	public MyDate(int year, int month, int day) {
 		day = setDay(day);
 		setMonth(month);
@@ -25,20 +25,20 @@ public class MyDate extends Date {
 
 	public MyDate(String s) {
 		String[] numbers = s.split("-");
-		 setYear(Integer.parseInt(numbers[0]));
-		 setMonth(Integer.parseInt(numbers[1]));
-		 setDay(Integer.parseInt(numbers[2]));
+		setYear(Integer.parseInt(numbers[0]));
+		setMonth(Integer.parseInt(numbers[1]));
+		setDay(Integer.parseInt(numbers[2]));
 	}
 
 	public MyDate(Scanner scan) {
 		String str = scan.nextLine();
 		String[] numbers = str.split("-");
-		 setYear(Integer.parseInt(numbers[0]));
-		 setMonth(Integer.parseInt(numbers[1]));
-		 setDay(Integer.parseInt(numbers[2]));
+		setYear(Integer.parseInt(numbers[0]));
+		setMonth(Integer.parseInt(numbers[1]));
+		setDay(Integer.parseInt(numbers[2]));
 
 	}
-	
+
 	public int daysCount(MyDate userLimitDate, MyDate m) {
 		LocalDate limit = LocalDate.of(userLimitDate.year, userLimitDate.month, userLimitDate.day);
 		LocalDate fromList = LocalDate.of(m.year, m.month, m.day);
@@ -51,8 +51,6 @@ public class MyDate extends Date {
 		writer.print(month + ", ");
 		writer.println(year);
 	}
-
-
 
 	public int getDay() {
 		return day;
@@ -68,7 +66,7 @@ public class MyDate extends Date {
 
 		}
 		this.day = day;
-		return day;
+		return this.day;
 	}
 
 	public int getMonth() {
@@ -87,6 +85,8 @@ public class MyDate extends Date {
 	}
 
 	public void setYear(int year) {
+		if (year < 0)
+			this.year = 0;
 		this.year = year;
 	}
 
