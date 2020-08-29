@@ -53,10 +53,11 @@ public class DisplayHelper {
 
 	static void showSortedList(List<Airplane> sortedList, MyDate startDate, MyDate endDate, String company,
 			String city, String country, String airport, Boolean[] days , boolean isHtml) {
+		String daysIn = "";
 		List<Airplane> finalSortedListByAllVariables = new ArrayList<>();
 		Airplane airplaneToEnter;
 		System.out.println("Here are the sort by the Date:" + startDate + ",Until: " + endDate + ", By company: "
-				+ company + ", By city: " + city + ", By country: " + country + ", By airport: " + airport + ", By day: " + days.toString());
+				+ company + ", By city: " + city + ", By country: " + country + ", By airport: " + airport + ", By day: " + daysIn);
 		String[] daydStr = new String[7];
 
 		for (int i = 0; i < 7; i++) {
@@ -90,7 +91,8 @@ public class DisplayHelper {
 				day = "Saturday";
 				daydStr[6] = day;
 			}
-			System.out.print(day + " ");
+			daysIn = day +" ";
+			System.out.print(daysIn);
 		}
 		if (isHtml)
 			System.out.println("<br>");
@@ -153,14 +155,17 @@ public class DisplayHelper {
 					continue;
 				}
 			}
-			int couter = 0;
-			for (int j = 0; j < 7; j++) {
-				if (daydStr[j] != null && airplaneToEnter.getDay().equals(daydStr[j])) 
-					couter++;	
-			}
-			if(couter!=1) {
-				sortedList.set(i, null);
-				continue;
+			
+			if(!daysIn.equals("")) {
+				int couter = 0;
+				for (int j = 0; j < 7; j++) {
+					if (daydStr[j] != null && airplaneToEnter.getDay().equals(daydStr[j])) 
+						couter++;	
+				}
+				if(couter!=1) {
+					sortedList.set(i, null);
+					continue;
+				}
 			}
 			finalSortedListByAllVariables.add(airplaneToEnter);
 		}
