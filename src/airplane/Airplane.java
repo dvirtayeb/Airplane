@@ -5,7 +5,7 @@ import java.util.Scanner;
 
 public class Airplane {
 	protected String city;
-	protected MyDate date;
+	public MyDate date;
 	protected String company;
 	protected int hourFlightTime;
 	protected int mintuesFlightTime;
@@ -97,7 +97,7 @@ public class Airplane {
 	}
 	private String setDay(String day) {
 		if(day.length()>0)
-			Character.toUpperCase(day.charAt(0));
+			day = day.substring(0, 1).toUpperCase() + day.substring(1);
 		if(day.equals("Sunday") || day.equals("Monday") || day.equals("Tuesday") || day.equals("Wednesday") || day.equals("Thursday") || day.equals("Friday") ||
 				day.equals("Saturday"))
 			return day;
@@ -130,7 +130,7 @@ public class Airplane {
 
 	public String toString() {
 		return "company: " + company + " destination: " + city + " date: " + date.toString() + " time to flight: "
-				+ getTime() + " flight number: " + flightNum + " terminal: " + terminal;
+				+ getTime() + " flight number: " + flightNum + " terminal: " + terminal+ " day: " +  day;
 	}
 
 	public String getAirport() {
