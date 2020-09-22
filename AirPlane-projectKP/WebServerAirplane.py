@@ -88,7 +88,7 @@ def airplane():
 @app.route("/departures")
 def dep():
     return subprocess.check_output(
-        ["java", "-classpath", "/Users/dvir tayeb/eclipse-workspace/Airplane/bin", "airplane.Program",
+        ["java", "-classpath", "/Users/dvir tayeb/eclipse-workspace/Airplane/bin", "program.Program",
          request.args.get('outformat'), "departures",
          request.args.get('airline'), request.args.get('country'),
          request.args.get('city'), request.args.get('airport'),
@@ -104,7 +104,7 @@ def dep():
 @app.route("/arrivals")
 def arr():
     return subprocess.check_output(
-        ["java", "-classpath","/Users/dvir tayeb/eclipse-workspace/Airplane/bin", "airplane.Program",
+        ["java", "-classpath","/Users/dvir tayeb/eclipse-workspace/Airplane/bin", "program.Program",
          request.args.get('outformat'), "arrivals",
          request.args.get('airline'), request.args.get('country'),
          request.args.get('city'), request.args.get('airport'),
